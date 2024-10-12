@@ -1,2 +1,2 @@
-# byebye.cc
+# www.byebye.cc
 简洁导航网
