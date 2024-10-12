@@ -1,0 +1,270 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>ByeBye导航</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 0;  
+
+            background-image: url('bg.png');
+            background-repeat: repeat;
+
+            display: flex;
+            justify-content: center;
+
+            padding-top: 280px;
+        }  
+        header {  
+            text-align: center;  
+            margin-bottom: 20px;  
+        }  
+        header h2 {  
+            color: #333;  
+            font-size: 30px;
+        }  
+        .searchbg {  
+            background-color: #FFF;   
+            height: 50px;
+            width: 100%;
+            border-radius: 50px;  
+            border: 1px solid #666;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }  
+        .searchbg button {  
+            display: block;  
+            width: 50px;  
+            height: 50px;  
+            background-color: white;
+            border: none;
+            border-radius: 0px 50px 50px 0px; /*上右下左*/  
+
+            overflow: hidden;
+        }  
+        .searchbg button:hover {  
+            background-color: #d6e2f7;  
+        }  
+
+        button .icon{
+            width: 23px;
+            aspect-ratio: auto;
+            color: red;
+            height: auto;
+
+            fill: #4774c0;
+        }
+
+        .content{
+            width: 800px;
+            height: 485px;
+     /*       position: absolute;
+            left: 50%;
+            top: 50%;*/
+        }
+
+        #p_button{
+            border-radius: 50px 0px 0px 50px; /*上右下左*/  
+        }
+
+        #p_img{
+            width: 20px;
+            aspect-ratio: auto;
+            color: red;
+            height: auto;
+        }
+
+        .search_input{
+            flex-grow: 1; /*自动拉伸宽度*/
+            border: none;
+            background-color: white;
+            font-size: 16px;
+        }
+
+        input:focus {  
+            outline: none; /* 移除默认的焦点边框 */  
+            box-shadow: none; /* 某些浏览器可能还添加了box-shadow，所以也移除它 */  
+        }  
+
+        .linklist{
+            width: 100%;
+/*            background-color: red;*/
+/*            height: 100px;*/
+            margin-top: 60px;
+        }
+
+        .linklist ul{
+            list-style-type: none; /* 移除默认的列表样式 */  
+            padding: 0; /* 移除默认的内边距 */  
+            margin: 0; /* 移除默认的外边距 */  
+            display: flex; /* 使用flex布局使列表项横向排列 */  
+            flex-wrap: wrap; /* 允许列表项在必要时换行 */  
+        }
+
+        ul li{
+            width: 160px;
+            height: 30px;
+            margin-bottom: 30px;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            cursor: pointer;  /*手型光标*/
+        }
+
+        li img{
+/*            width: 23px;*/
+            max-height: 28px;
+            aspect-ratio: auto;
+        }
+
+        li span{
+            margin-left: 8px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .li-hover-effect{
+            color: #0faee9;
+            font-size: 16px;
+        }
+
+    </style>  
+</head>  
+<body>  
+    <div class='content'>
+        <header>  
+            <h2>byebye.cc</h2>
+        </header>  
+        <div class="searchbg">  
+            <button id="p_button" onclick="clickicon()">
+                <img id ='p_img' src="sbing.png">
+            </button>
+
+            <input id="search_text" type="text" class="search_input" placeholder="ByeBye导航"></input>
+            <button onclick="search()">
+                <svg t="1728698152646" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4248" width="200" height="200"><path d="M426.666667 170.666667a256 256 0 1 0 0 512 256 256 0 0 0 0-512z m-341.333334 256a341.333333 341.333333 0 1 1 610.986667 209.322666l229.845333 229.845334a42.666667 42.666667 0 0 1-60.330666 60.330666l-229.845334-229.845333A341.333333 341.333333 0 0 1 85.333333 426.666667z"  p-id="4249"></path></svg>
+            </button>
+        </div>  
+
+        <div class="linklist">
+            <ul id = "link_ul">
+                
+            </ul>
+        </div>
+    </div>
+
+
+     <script>
+
+        var isTyping = false 
+
+
+        // 获取要显示输出的元素  
+        const inputElement = document.getElementById('search_text');  
+
+        inputElement.addEventListener('focus', () => {  
+            // statusElement.textContent = 'Status: Focused';  
+            isTyping = true 
+        });  
+  
+        inputElement.addEventListener('blur', () => {  
+            // statusElement.textContent = 'Status: Not focused';
+            isTyping = false   
+        });  
+  
+        // 添加键盘事件监听器  
+        document.addEventListener('keyup', function(event) {  
+            // 获取按键的字符表示（对于可打印字符）  
+            const key = event.key;  
+            // 获取按键的代码（对于特殊键，如箭头键）  
+            const keyCode = event.keyCode || event.which;  
+            
+            console.log(key)
+            console.log(keyCode) 
+
+            ///说明按了回车
+            if( keyCode == 13 ){
+                if(isTyping == true ) {
+                    //置空文本，并失去焦点
+                    inputElement.blur()
+                    search()
+                    inputElement.value = ""
+                }
+            }
+        });
+
+        function clickicon() {
+            alert('敬请期待')
+        }
+
+
+        function search() {
+            // window.open('https://www.baidu.com/s?tn=15007414_9_dg&ie=utf-8&wd=nihao')
+
+            let surl = "https://cn.bing.com/search?q=" 
+
+            let input = document.getElementById('search_text')
+
+            let text = input.value
+
+            window.open(surl+text)
+        }
+
+        function createLinkList() {
+           // link_ul 
+             const ul = document.getElementById('link_ul');  
+             let names = ["微笑刺客", "简书", "知乎", "github", "4k影视", "电子书", "苹果商店切换"]
+             let icons = ["smile.png","jianshu.ico","zhihu.png","github.png", "4k.png", "zlib.png", "apple.png"]
+             let urls = ["https://www.kidsmiless.cn", "https://www.jianshu.com", "https://www.zhihu.com","https://www.github.com","http://4kvm.site","https://z-lib.gs","https://as.dogged.cn"]
+
+            for(let i=0; i<names.length; i++) {
+                const img = document.createElement('img')
+                img.src = "link_"+icons[i]
+                const span = document.createElement('span')
+                span.innerText = names[i]
+                span.id = "span_"+(i+1)
+
+                const li = document.createElement('li')
+                li.id = urls[i]
+                li.appendChild(img)
+                li.appendChild(span)
+
+                ul.appendChild(li)
+
+
+                li.addEventListener('click', () => {  
+                    // alert(`You clicked on item with index: ${li.getAttribute('data-index')}`); 
+                    window.open(li.id) 
+                }); 
+
+                li.addEventListener('mouseover', () => {  
+                    const spans = li.getElementsByTagName('span');  
+                    spans[0].classList.add('li-hover-effect');  
+                    console.log('howwwww')
+                });  
+  
+                // 可选：为鼠标移出事件添加监听器以移除hover效果  
+                li.addEventListener('mouseout', () => {  
+                    const spans = li.getElementsByTagName('span');  
+                    spans[0].classList.remove('li-hover-effect');  
+
+                    console.log('move out ')
+                });  
+            }
+        }
+
+        createLinkList()
+
+    </script>
+
+</body>  
+</html>
+
+
+
